@@ -35,13 +35,20 @@ mongoose.connection.on("disconnected", function () {
 //MiddleWare
 app.use(express.json());
 
-app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/users", usersRoute);
-app.use("/api/v1/hotels", hotelsRoute);
-app.use("/api/v1/rooms", roomsRoute);
+app.use("/bookly_africa/api/v1/auth", authRoute);
+app.use("/bookly_africa/api/v1/users", usersRoute);
+app.use("/bookly_africa/api/v1/hotels", hotelsRoute);
+app.use("/bookly_africa/api/v1/rooms", roomsRoute);
 
-app.use(function (req, res, next) {
-  console.log("Hi, I'm a middleWare");
+app.use(function (err, req, res, next) {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.errorMessage || "Oops!, Something went wrong!";
+  return res.status(errorStatus).json({
+    success: false,
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack,
+  });
 });
 
 //Configuring the port to listen to
