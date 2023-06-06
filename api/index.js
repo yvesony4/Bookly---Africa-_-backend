@@ -32,7 +32,7 @@ mongoose.connection.on("disconnected", function () {
   );
 });
 
-//MiddleWares
+//MiddleWare
 app.use(express.json());
 
 app.use("/api/v1/auth", authRoute);
