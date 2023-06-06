@@ -34,11 +34,17 @@ mongoose.connection.on("disconnected", function () {
 
 //MiddleWares
 app.use(express.json());
+
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", usersRoute);
 app.use("/api/v1/hotels", hotelsRoute);
 app.use("/api/v1/rooms", roomsRoute);
 
+app.use(function (req, res, next) {
+  console.log("Hi, I'm a middleWare");
+});
+
+//Configuring the port to listen to
 app.listen(3000, function () {
   connect();
   console.log("Server started at port 3000");
