@@ -5,6 +5,7 @@ import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import hotelsRoute from "./routes/hotels.js";
 import roomsRoute from "./routes/rooms.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 dotenv.config();
@@ -24,15 +25,16 @@ mongoose.connection.on("disconnected", function () {
   const time = currentDate.toTimeString();
   console.log("Current time:", time);
   console.log(
-    "MongoDb disconnected! on" +
+    "MongoDb disconnected! on " +
       date +
-      "and " +
+      " and " +
       time +
       "******************Datatabase logs"
   );
 });
 
 //MiddleWare
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/bookly_africa/api/v1/auth", authRoute);
@@ -40,14 +42,14 @@ app.use("/bookly_africa/api/v1/users", usersRoute);
 app.use("/bookly_africa/api/v1/hotels", hotelsRoute);
 app.use("/bookly_africa/api/v1/rooms", roomsRoute);
 
-app.use(function (err, req, res, next) {
-  const errorStatus = err.status || 500;
-  const errorMessage = err.errorMessage || "Oops!, Something went wrong!";
+app.use((error, req, res, next) => {
+  const errorStatus = error.status || 500;
+  //const errorMessage = error.errorMessage || "Something went wrong!"; There is a problem with this line[needs correction]
   return res.status(errorStatus).json({
     success: false,
     status: errorStatus,
-    message: errorMessage,
-    stack: err.stack,
+    message: error.message,
+    stack: error.stack,
   });
 });
 
