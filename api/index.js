@@ -49,7 +49,7 @@ app.use((error, req, res, next) => {
     success: false,
     status: errorStatus,
     message: error.message,
-    stack: error.stack,
+    // stack: error.stack,
   });
 });
 
