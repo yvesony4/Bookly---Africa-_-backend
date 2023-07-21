@@ -2,6 +2,19 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import createError from "../utils/error.js";
 import Jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+
+// Create a transporter using the default SMTP transport
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: true, // Set to true if your SMTP server uses TLS
+  auth: {
+    user: "yvlison4@gmail.com", // Your email address
+    pass: "xymbwislsjjnxewl", // Your email password or an app-specific password
+  },
+});
 
 export const register = async function (req, res, next) {
   try {
@@ -17,6 +30,24 @@ export const register = async function (req, res, next) {
     res
       .status(200)
       .json({ responseCode: 200, message: "User created successfully" });
+
+    if (res.status(200)) {
+      // Email content
+      const mailOptions = {
+        from: "yvlison4@gmail.com", // Sender address
+        to: req.body.email, // List of recipients
+        subject: "Registration confirmation", // Subject line
+        text: "Hello from Bookly Africa, <b> This is to confirm your email after successful registration on our platform!", // Plain text body
+      };
+      // Send the email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("========Error sending email:", error);
+        } else {
+          console.log("*************Email sent:", info.response);
+        }
+      });
+    }
     res.status(200).send("User created successfully");
   } catch (err) {
     next(err);
