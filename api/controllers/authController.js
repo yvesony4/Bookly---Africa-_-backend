@@ -9,13 +9,12 @@ import validatePassword from "../utils/passwordValidator.js";
 
 // Create a transporter using the default SMTP transport
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: true, // Set to true if your SMTP server uses TLS
+  host: "mail.bookly.africa",
+  port: 465,
+  secure: true,
   auth: {
-    user: "yvlison4@gmail.com", // Your email address
-    pass: "xymbwislsjjnxewl", // Your email password or an app-specific password
+    user: "noreply@bookly.africa",
+    pass: "9o@&favthI~B",
   },
 });
 
@@ -25,12 +24,13 @@ export const register = async function (req, res, next) {
     const hash = bcrypt.hashSync(req.body.password, salt);
 
     // Validate the new password.
+    /* check this use case later
     if (!validatePassword(hash)) {
       return res.status(400).json({
         message:
           "at least 8 characters - capital letter - small letter - symbol.",
       });
-    }
+    } */
 
     const otp = speakeasy.totp({
       secret: speakeasy.generateSecret().base32,
@@ -51,7 +51,7 @@ export const register = async function (req, res, next) {
     if (res.status(200)) {
       // Email content
       const mailOptions = {
-        from: "yvlison4@gmail.com", // Sender address
+        from: "noreply@bookly.africa", // Sender address
         to: req.body.email, // List of recipients
         subject: "Bookly Africa Account registration confirmation", // Subject line
         html:
@@ -227,12 +227,16 @@ export const reset_password = async function (req, res, next) {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(newPassword, salt);
     // Validate the new password.
+
+    /* check this use case later
+
     if (!validatePassword(hash)) {
       return res.status(400).json({
         message:
           "at least 8 characters - capital letter - small letter - symbol.",
       });
     }
+    */
     user.password = hash;
     user.resetToken = null;
     user.resetTokenExpiration = null;

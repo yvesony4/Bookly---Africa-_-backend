@@ -3,22 +3,43 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const BookingSchema = new mongoose.Schema({
-  customerName: {
+  firstName: {
     type: String,
     required: true,
   },
-  checkInDate: {
+  lastName: {
     type: Date,
     required: true,
   },
-  checkOutDate: {
+  email: {
     type: Date,
     required: true,
   },
-  roomType: {
+  phone: {
     type: String,
   },
-  SpecialRequest: {
+  AddressLine1: {
+    type: String,
+  },
+  AddressLine2: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  province: {
+    type: String,
+  },
+  postalCode: {
+    type: String,
+  },
+  country: {
+    type: String,
+  },
+  specialRequirement: {
+    type: String,
+  },
+  totalPrice: {
     type: String,
   },
 });
