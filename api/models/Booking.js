@@ -3,34 +3,30 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const BookingSchema = new mongoose.Schema({
+  hotelName: {
+    type: String,
+    required: true,
+  },
   firstName: {
     type: String,
     required: true,
   },
   lastName: {
-    type: Date,
+    type: String,
     required: true,
   },
   email: {
-    type: Date,
+    type: String,
     required: true,
   },
   phone: {
     type: String,
+    required: true,
   },
-  AddressLine1: {
-    type: String,
-  },
-  AddressLine2: {
+  address: {
     type: String,
   },
   city: {
-    type: String,
-  },
-  province: {
-    type: String,
-  },
-  postalCode: {
     type: String,
   },
   country: {
@@ -40,8 +36,13 @@ const BookingSchema = new mongoose.Schema({
     type: String,
   },
   totalPrice: {
-    type: String,
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
   },
 });
 
-export default mongoose.model("Booking", HotelSchema);
+export default mongoose.model("Booking", BookingSchema);

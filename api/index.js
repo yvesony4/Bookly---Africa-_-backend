@@ -5,6 +5,7 @@ import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import hotelsRoute from "./routes/hotels.js";
 import roomsRoute from "./routes/rooms.js";
+import bookingRoute from "./routes/booking.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
@@ -81,6 +82,7 @@ app.use("/bookly_africa/api/v1/auth", authRoute);
 app.use("/bookly_africa/api/v1/users", usersRoute);
 app.use("/bookly_africa/api/v1/hotels", hotelsRoute);
 app.use("/bookly_africa/api/v1/rooms", roomsRoute);
+app.use("/bookly_africa/api/v1/booking", bookingRoute);
 
 app.use((error, req, res, next) => {
   const errorStatus = error.status || 500;
