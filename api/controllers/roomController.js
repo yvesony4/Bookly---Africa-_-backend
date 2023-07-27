@@ -80,3 +80,21 @@ export const getRooms = async (req, res, next) => {
     next(err);
   }
 };
+
+export const viewRoomAmenities = async (req, res, next) => {
+  try {
+    try {
+      const foundroom = await Room.findById(req.params.id);
+      console.log("Test");
+      console.log("The room found:" + foundroom);
+      const roomAmenities = foundroom.amenities;
+      res.status(200).json({ responseCode: 200, roomAmenities });
+    } catch (err) {
+      next(err);
+    }
+  } catch (err) {
+    res
+      .status(502)
+      .json({ responseCode: 502, message: "error retrieving room amenities" });
+  }
+};

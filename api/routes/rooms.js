@@ -6,6 +6,7 @@ import {
   getRoom,
   getRooms,
   updateRoom,
+  viewRoomAmenities,
 } from "../controllers/roomController.js";
 
 const router = express.Router();
@@ -24,5 +25,7 @@ router.get("/:id", getRoom);
 
 // API to extract all rooms
 router.get("/", getRooms);
+
+router.get("/:id/:hotelid", verifyAdmin, viewRoomAmenities);
 
 export default router;
