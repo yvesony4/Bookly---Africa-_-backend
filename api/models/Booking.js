@@ -23,19 +23,10 @@ const BookingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  AddressLine1: {
-    type: String,
-  },
-  AddressLine2: {
+  address: {
     type: String,
   },
   city: {
-    type: String,
-  },
-  province: {
-    type: String,
-  },
-  postalCode: {
     type: String,
   },
   country: {
@@ -46,6 +37,10 @@ const BookingSchema = new mongoose.Schema({
   },
   totalPrice: {
     type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
     required: true,
   },
 });
