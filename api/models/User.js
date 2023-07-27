@@ -22,6 +22,19 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    validated: {
+      type: Boolean,
+      default: false,
+    },
+    otp: {
+      type: String,
+    },
+    resetToken: {
+      type: String,
+    },
+    resetTokenExpiration: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

@@ -34,7 +34,10 @@ export const deleteHotel = async (req, res, next) => {
       .status(200)
       .json({ responseCode: 200, message: "Hotel deleted successfully" });
   } catch (err) {
-    next(err);
+    res
+      .status(502)
+      .json({ responseCode: 502, message: "Something went wrong!" });
+    //next(err);
   }
 };
 

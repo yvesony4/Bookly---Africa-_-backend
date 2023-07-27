@@ -6,6 +6,9 @@ import usersRoute from "./routes/users.js";
 import hotelsRoute from "./routes/hotels.js";
 import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
+import session from "express-session";
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 const app = express();
 dotenv.config();
@@ -37,6 +40,43 @@ mongoose.connection.on("disconnected", function () {
 app.use(cookieParser());
 app.use(express.json());
 
+// Google login
+app.use(
+  session({
+    secret: "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",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID:
+        "547276093841-pj458frj0lf2ku961mc5t2a9cptjttl1.apps.googleusercontent.com",
+      clientSecret: "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",
+      callbackURL:
+        "http://localhost:3000/bookly_africa/api/v1/auth/google/callback",
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // This function will handle user information after successful login.
+      // You can save the user to the database or perform any other required operations.
+      return done(null, profile);
+    }
+  )
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/bookly_africa/api/v1/auth", authRoute);
 app.use("/bookly_africa/api/v1/users", usersRoute);
 app.use("/bookly_africa/api/v1/hotels", hotelsRoute);
@@ -49,7 +89,7 @@ app.use((error, req, res, next) => {
     success: false,
     status: errorStatus,
     message: error.message,
-    stack: error.stack,
+    // stack: error.stack,
   });
 });
 
