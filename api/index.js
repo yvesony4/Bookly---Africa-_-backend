@@ -96,7 +96,7 @@ app.use((error, req, res, next) => {
 });
 
 //Configuring the port to listen to
-app.listen(8000, function () {
+app.listen(3000, function () {
   connect();
   console.log("Server started at port 3000");
 });
