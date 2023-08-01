@@ -6,8 +6,8 @@ import createHotel, {
   getHotels,
   updateHotel,
   viewHotelAmenities,
-} from "../controllers/hotelController.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+} from "../../controllers/Hotel/hotelController.js";
+import { verifyAdmin } from "../../utils/verifyToken.js";
 
 const router = express.Router();
 

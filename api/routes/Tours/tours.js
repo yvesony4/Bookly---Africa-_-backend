@@ -4,8 +4,8 @@ import {
   deleteTour,
   getTours,
   updateTour,
-} from "../controllers/toursController.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+} from "../../controllers/Tour/toursController.js";
+import { verifyAdmin } from "../../utils/verifyToken.js";
 
 const router = express.Router();
 

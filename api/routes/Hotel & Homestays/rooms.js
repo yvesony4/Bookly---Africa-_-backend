@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyAdmin } from "../utils/verifyToken.js";
+import { verifyAdmin } from "../../utils/verifyToken.js";
 import {
   createRoom,
   deleteRoom,
@@ -7,7 +7,7 @@ import {
   getRooms,
   updateRoom,
   viewRoomAmenities,
-} from "../controllers/roomController.js";
+} from "../../controllers/Hotel/roomController.js";
 
 const router = express.Router();
 
