@@ -26,6 +26,7 @@ router.get("/:id", getRoom);
 // API to extract all rooms
 router.get("/", getRooms);
 
+// API to extract the amenities of a specific room
 router.get("/:id/:hotelid", verifyAdmin, viewRoomAmenities);
 
 export default router;

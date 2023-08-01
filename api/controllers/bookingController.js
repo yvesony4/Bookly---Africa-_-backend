@@ -47,3 +47,12 @@ export const cancelBooking = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getBookings = async (req, res, next) => {
+  try {
+    const bookings = await Booking.find();
+    res.status(200).json(bookings);
+  } catch (err) {
+    next(err);
+  }
+};
