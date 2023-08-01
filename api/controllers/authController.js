@@ -40,6 +40,7 @@ export const register = async function (req, res, next) {
       username: req.body.username,
       email: req.body.email,
       password: hash,
+      userType: "normal",
       otp: otp,
     });
 

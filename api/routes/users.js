@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  assignRole,
   deleteUser,
   getUser,
   getUsers,
@@ -34,5 +35,7 @@ router.get("/:id", verifyUser, getUser);
 
 // API to extract all users
 router.get("/", verifyAdmin, getUsers);
+
+router.post("/role/:id", verifyAdmin, assignRole);
 
 export default router;

@@ -59,4 +59,22 @@ export const getHotels = async (req, res, next) => {
   }
 };
 
+export const viewHotelAmenities = async (req, res, next) => {
+  try {
+    try {
+      const foundhotel = await Hotel.findById(req.params.id);
+      console.log("Test");
+      console.log("The Hotel found:" + foundhotel);
+      const hotelAmenities = foundhotel.amenities;
+      res.status(200).json({ responseCode: 200, hotelAmenities });
+    } catch (err) {
+      next(err);
+    }
+  } catch (err) {
+    res
+      .status(502)
+      .json({ responseCode: 502, message: "error retrieving room amenities" });
+  }
+};
+
 export default createHotel;

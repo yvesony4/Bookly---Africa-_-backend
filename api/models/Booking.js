@@ -7,6 +7,10 @@ const BookingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  roomName: {
+    type: String,
+    required: true,
+  },
   firstName: {
     type: String,
     required: true,
@@ -42,6 +46,13 @@ const BookingSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
+  },
+  status: {
+    type: String,
+  },
+  paid: {
+    type: String,
+    default: false,
   },
 });
 

@@ -5,6 +5,7 @@ import createHotel, {
   getHotel,
   getHotels,
   updateHotel,
+  viewHotelAmenities,
 } from "../controllers/hotelController.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
@@ -24,5 +25,8 @@ router.get("/:id", getHotel);
 
 // API to extract all hotels
 router.get("/", getHotels);
+
+// API to extract the amenities of a specific hotel
+router.get("/hotelAmenities/:id", verifyAdmin, viewHotelAmenities);
 
 export default router;

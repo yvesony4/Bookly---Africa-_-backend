@@ -45,3 +45,44 @@ export const getUsers = async (req, res, next) => {
     next(err);
   }
 };
+
+export const assignRole = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (req.body.role === "Normal") {
+      user.role = "Normal";
+    }
+
+    if (req.body.role === "Vendor") {
+      console.log("The compiler is in Vendor mode");
+      user.role = "Vendor";
+    }
+
+    if (req.body.role === "Admin") {
+      user.role = "Admin";
+      user.isAdmin = true;
+    }
+
+    await User.findByIdAndUpdate(
+      user.id,
+      {
+        $set: user,
+      },
+      {
+        new: true,
+      }
+    );
+    const responseData = {
+      message: "Role assigned successfully",
+      data: {
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    };
+    res.status(200).json(responseData);
+  } catch (err) {
+    next(err);
+  }
+};

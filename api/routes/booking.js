@@ -1,9 +1,19 @@
 import express from "express";
-import { createBooking } from "../controllers/bookingController.js";
+import {
+  cancelBooking,
+  createBooking,
+  getBookings,
+  modifyBooking,
+} from "../controllers/bookingController.js";
+import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
-//create booking
+//booking routes
 router.post("/bookNow", createBooking);
+router.put("/modify/:id", verifyAdmin, modifyBooking);
+router.put("/cancel/:id", verifyAdmin, cancelBooking);
+// API to extract all hotels
+router.get("/", getBookings);
 
 export default router;
