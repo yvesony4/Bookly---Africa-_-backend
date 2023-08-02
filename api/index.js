@@ -3,10 +3,11 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
-import hotelsRoute from "./routes/Hotel & Homestays/hotels.js";
-import roomsRoute from "./routes/Hotel & Homestays/rooms.js";
-import bookingRoute from "./routes/Hotel & Homestays/booking.js";
+import hotelsRoute from "./routes/Hotel/hotels.js";
+import roomsRoute from "./routes/Hotel/rooms.js";
+import bookingRoute from "./routes/Hotel/booking.js";
 import toursRoute from "./routes/Tours/tours.js";
+import toursBookingRoute from "./routes/Tours/booking.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
@@ -83,8 +84,9 @@ app.use("/bookly_africa/api/v1/auth", authRoute);
 app.use("/bookly_africa/api/v1/users", usersRoute);
 app.use("/bookly_africa/api/v1/hotels", hotelsRoute);
 app.use("/bookly_africa/api/v1/rooms", roomsRoute);
-app.use("/bookly_africa/api/v1/booking", bookingRoute);
+app.use("/bookly_africa/api/v1/hotel/booking", bookingRoute);
 app.use("/bookly_africa/api/v1/tour", toursRoute);
+app.use("/bookly_africa/api/v1/tour/booking", toursBookingRoute);
 
 app.use((error, req, res, next) => {
   const errorStatus = error.status || 500;
