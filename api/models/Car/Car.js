@@ -15,20 +15,8 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  startTime: {
-    type: String,
-  },
-  duration: {
-    type: Number,
-  },
   FAQs: [{ title: String, content: String }],
   bannerImage: {
-    type: [String],
-  },
-  gallery: {
-    type: [String],
-  },
-  featuredImage: {
     type: [String],
   },
 
@@ -56,6 +44,14 @@ const EventSchema = new mongoose.Schema({
   extraPrice: [{ name: String, price: Number, type: String }],
 
   buyerFee: [{ name: String, price: Number, type: String }],
+
+  carType: [{ name: String }],
+
+  carFeatures: [{ name: String }],
+
+  ICAR_url: {
+    type: String,
+  },
 });
 
-export default mongoose.model("Events", EventSchema);
+export default mongoose.model("Car", EventSchema);

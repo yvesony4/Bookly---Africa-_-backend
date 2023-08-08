@@ -8,6 +8,10 @@ import roomsRoute from "./routes/Hotel/rooms.js";
 import bookingRoute from "./routes/Hotel/booking.js";
 import toursRoute from "./routes/Tours/tours.js";
 import toursBookingRoute from "./routes/Tours/booking.js";
+import eventRoute from "./routes/Event/event.js";
+import eventBookingRoute from "./routes/Event/booking.js";
+import carRoute from "./routes/Car/car.js";
+import carBookingRoute from "./routes/Car/booking.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
@@ -87,6 +91,11 @@ app.use("/bookly_africa/api/v1/rooms", roomsRoute);
 app.use("/bookly_africa/api/v1/hotel/booking", bookingRoute);
 app.use("/bookly_africa/api/v1/tour", toursRoute);
 app.use("/bookly_africa/api/v1/tour/booking", toursBookingRoute);
+app.use("/bookly_africa/api/v1/tour", toursRoute);
+app.use("/bookly_africa/api/v1/event", eventRoute);
+app.use("/bookly_africa/api/v1/event/booking", eventBookingRoute);
+app.use("/bookly_africa/api/v1/car", carRoute);
+app.use("/bookly_africa/api/v1/car/booking", carBookingRoute);
 
 app.use((error, req, res, next) => {
   const errorStatus = error.status || 500;

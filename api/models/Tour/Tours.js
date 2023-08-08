@@ -31,7 +31,6 @@ const ToursSchema = new mongoose.Schema({
   tourMaxPeople: {
     type: Number,
   },
-
   include: [{ title: String }],
   exclude: [{ title: String }],
   itenary: [
