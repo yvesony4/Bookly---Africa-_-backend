@@ -77,7 +77,7 @@ const transporter = nodemailer.createTransport({
 // };
 
 
-// Proposed fix "Added an error handling block for the case where the password validation fails in the register function. Also, Removed the redundant res.status(200).send("User created successfully") line of code after the email sending code"
+// Proposed fix "Added an error handling block for the case where the password validation fails in the register function. Also, Removed1 the redundant res.status(200).send("User created successfully") line of code after the email sending code"
 export const register = async function (req, res, next) {
   try {
     const salt = bcrypt.genSaltSync(10);
