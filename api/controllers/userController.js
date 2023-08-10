@@ -50,6 +50,18 @@ export const assignRole = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
 
+    const failureData = {
+      message: "You are not Authorized",
+      data: {
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    };
+
+    if (user.role != "Admin") {
+      res.status(200).json(failureData);
+    }
     if (req.body.role === "Normal") {
       user.role = "Normal";
     }
