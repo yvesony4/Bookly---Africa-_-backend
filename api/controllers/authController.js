@@ -70,7 +70,7 @@ export const register = async function (req, res, next) {
         }
       });
     }
-    res.status(200).send("User created successfully");
+    // res.status(200).send("User created successfully");
   } catch (err) {
     next(err);
   }
