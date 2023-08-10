@@ -4,8 +4,8 @@ import {
   createBooking,
   getBookings,
   modifyBooking,
-} from "../controllers/bookingController.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+} from "../../controllers/Hotel/bookingController.js";
+import { verifyAdmin } from "../../utils/verifyToken.js";
 
 const router = express.Router();
 

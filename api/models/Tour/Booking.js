@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const BookingSchema = new mongoose.Schema({
-  hotelName: {
+const TourBookingSchema = new mongoose.Schema({
+  title: {
     type: String,
     required: true,
   },
-  roomName: {
+  type: {
     type: String,
     required: true,
   },
@@ -56,4 +56,4 @@ const BookingSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Booking", BookingSchema);
+export default mongoose.model("tourBooking", TourBookingSchema);
