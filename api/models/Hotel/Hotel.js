@@ -51,6 +51,9 @@ const HotelSchema = new mongoose.Schema({
     default: false,
   },
   amenities: [{ name: String, description: String }],
+  createdBy: {
+    type: String,
+  },
 });
 
 export default mongoose.model("Hotel", HotelSchema);

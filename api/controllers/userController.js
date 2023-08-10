@@ -54,8 +54,6 @@ export const assignRole = async (req, res, next) => {
       message: "You are not Authorized",
       data: {
         username: user.username,
-        email: user.email,
-        role: user.role,
       },
     };
 

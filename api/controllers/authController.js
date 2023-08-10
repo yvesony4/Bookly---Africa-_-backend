@@ -40,7 +40,7 @@ export const register = async function (req, res, next) {
       username: req.body.username,
       email: req.body.email,
       password: hash,
-      role: "normal",
+      role: "Normal",
       otp: otp,
     });
 
@@ -159,7 +159,7 @@ function generateToken() {
 
 function sendResetEmail(email, token) {
   const mailOptions = {
-    from: "yvlison4@gmail.com",
+    from: "noreply@bookly.africa",
     to: email,
     subject: "Password Reset Request",
     text:
