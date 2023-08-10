@@ -7,12 +7,12 @@ import createHotel, {
   updateHotel,
   viewHotelAmenities,
 } from "../../controllers/Hotel/hotelController.js";
-import { verifyAdmin, verifyVendor } from "../../utils/verifyToken.js";
+import { verifyAdmin } from "../../utils/verifyToken.js";
 
 const router = express.Router();
 
 // API to create Hotel
-router.post("/", verifyAdmin, verifyVendor, createHotel);
+router.post("/", verifyAdmin, createHotel);
 
 //API to update Hotel
 router.put("/:id", verifyAdmin, updateHotel);

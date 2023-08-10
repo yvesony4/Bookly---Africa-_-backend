@@ -1,7 +1,14 @@
 import Hotel from "../../models/Hotel/Hotel.js";
+import User from "../../models/User.js";
 
 const createHotel = async (req, res, next) => {
   req.body.createdBy = req.user.id;
+  const userType = User.findById(req.body.createdBy);
+
+  if (userType.role != "Vendor" || req.user.isAdmin) {
+    return res.status(407).json({ message: "You are not authorized" });
+  }
+
   const newHotel = new Hotel(req.body);
   try {
     const savedHotel = await newHotel.save();
