@@ -1,6 +1,7 @@
 import Hotel from "../../models/Hotel/Hotel.js";
 
 const createHotel = async (req, res, next) => {
+  req.body.createdBy = req.user.id;
   const newHotel = new Hotel(req.body);
   try {
     const savedHotel = await newHotel.save();
@@ -12,16 +13,22 @@ const createHotel = async (req, res, next) => {
 
 export const updateHotel = async (req, res, next) => {
   try {
-    const updatedHotel = await Hotel.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json(updatedHotel);
+    const foundHotel = await Hotel.findById(req.params.id);
+
+    if (!foundHotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    foundHotel.set(req.body);
+
+    if (req.user.id === foundHotel.createdBy || req.user.isAdmin) {
+      const updatedHotel = await foundHotel.save();
+      res
+        .status(200)
+        .json({ message: "Hotel updated successfully", hotel: updatedHotel });
+    } else {
+      res.status(407).json({ message: "You are not authorized" });
+    }
   } catch (err) {
     next(err);
   }
@@ -29,6 +36,21 @@ export const updateHotel = async (req, res, next) => {
 
 export const deleteHotel = async (req, res, next) => {
   try {
+    const foundHotel = await Hotel.findById(req.params.id);
+
+    if (!foundHotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    if (req.user.id === foundHotel.createdBy || req.user.isAdmin) {
+      await foundHotel.deleteOne();
+      res.status(200).json({ message: "Hotel deleted successfully" });
+    } else {
+      res.status(407).json({ message: "You are not authorized" });
+    }
+
+    await foundHotel.deleteOne();
+
     await Hotel.findByIdAndDelete(req.params.id);
     res
       .status(200)

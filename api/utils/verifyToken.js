@@ -35,3 +35,13 @@ export const verifyAdmin = (req, res, next) => {
     }
   });
 };
+
+export const verifyVendor = (req, res, next) => {
+  verifyToken(req, res, next, () => {
+    if (req.user.role === "Vendor" || req.user.isAdmin) {
+      next();
+    } else {
+      return next(createError(403, "You are not authorized!"));
+    }
+  });
+};

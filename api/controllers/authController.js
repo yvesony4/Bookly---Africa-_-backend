@@ -159,7 +159,7 @@ function generateToken() {
 
 function sendResetEmail(email, token) {
   const mailOptions = {
-    from: "yvlison4@gmail.com",
+    from: "noreply@bookly.africa",
     to: email,
     subject: "Password Reset Request",
     text:
