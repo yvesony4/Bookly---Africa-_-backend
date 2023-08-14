@@ -1,6 +1,13 @@
 import Event from "../../models/Event/Event.js";
 
 export const createEvent = async (req, res, next) => {
+  req.body.createdBy = req.user.id;
+  const userType = User.findById(req.body.createdBy);
+
+  if (userType.role != "Vendor" || req.user.isAdmin) {
+    return res.status(407).json({ message: "You are not authorized" });
+  }
+
   const newEvent = new Event(req.body);
   try {
     const savedEvent = await newEvent.save();
@@ -12,16 +19,22 @@ export const createEvent = async (req, res, next) => {
 
 export const updateEvent = async (req, res, next) => {
   try {
-    const updatedEvent = await Event.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json(updatedEvent);
+    const foundEvent = await Event.findById(req.params.id);
+
+    if (!foundEvent) {
+      return res.status(404).json({ error: "Event not found" });
+    }
+
+    foundEvent.set(req.body);
+
+    if (req.user.id === foundEvent.createdBy || req.user.isAdmin) {
+      const updatedEvent = await foundEvent.save();
+      res
+        .status(200)
+        .json({ message: "Hotel updated successfully", hotel: updatedEvent });
+    } else {
+      res.status(407).json({ message: "You are not authorized" });
+    }
   } catch (err) {
     next(err);
   }
@@ -29,10 +42,18 @@ export const updateEvent = async (req, res, next) => {
 
 export const deleteEvent = async (req, res, next) => {
   try {
-    await Event.findByIdAndDelete(req.params.id);
-    res
-      .status(200)
-      .json({ responseCode: 200, message: "Event deleted successfully" });
+    const foundEvent = await Event.findById(req.params.id);
+
+    if (!foundEvent) {
+      return res.status(404).json({ error: "Event not found" });
+    }
+
+    if (req.user.id === foundEvent.createdBy || req.user.isAdmin) {
+      await foundEvent.deleteOne();
+      res.status(200).json({ message: "Event deleted successfully" });
+    } else {
+      res.status(407).json({ message: "You are not authorized" });
+    }
   } catch (err) {
     res
       .status(502)

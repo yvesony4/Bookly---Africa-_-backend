@@ -1,6 +1,13 @@
 import Tours from "../../models/Tour/Tours.js";
 
 export const createTour = async (req, res, next) => {
+  req.body.createdBy = req.user.id;
+  const userType = User.findById(req.body.createdBy);
+
+  if (userType.role != "Vendor" || req.user.isAdmin) {
+    return res.status(407).json({ message: "You are not authorized" });
+  }
+
   const newTour = new Tours(req.body);
   try {
     const savedTour = await newTour.save();
@@ -12,16 +19,22 @@ export const createTour = async (req, res, next) => {
 
 export const updateTour = async (req, res, next) => {
   try {
-    const updatedTour = await Tours.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      {
-        new: true,
-      }
-    );
-    res.status(200).json(updatedTour);
+    const foundTour = await Tours.findById(req.params.id);
+
+    if (!foundTour) {
+      return res.status(404).json({ error: "Tour not found" });
+    }
+
+    foundTour.set(req.body);
+
+    if (req.user.id === foundTour.createdBy || req.user.isAdmin) {
+      const updatedTour = await foundTour.save();
+      res
+        .status(200)
+        .json({ message: "Hotel updated successfully", hotel: updatedTour });
+    } else {
+      res.status(407).json({ message: "You are not authorized" });
+    }
   } catch (err) {
     next(err);
   }
@@ -29,10 +42,18 @@ export const updateTour = async (req, res, next) => {
 
 export const deleteTour = async (req, res, next) => {
   try {
-    await Tours.findByIdAndDelete(req.params.id);
-    res
-      .status(200)
-      .json({ responseCode: 200, message: "Tour deleted successfully" });
+    const foundTour = await Tours.findById(req.params.id);
+
+    if (!foundTour) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    if (req.user.id === foundTour.createdBy || req.user.isAdmin) {
+      await foundTour.deleteOne();
+      res.status(200).json({ message: "Tour deleted successfully" });
+    } else {
+      res.status(407).json({ message: "You are not authorized" });
+    }
   } catch (err) {
     res
       .status(502)
