@@ -56,6 +56,9 @@ const EventSchema = new mongoose.Schema({
   extraPrice: [{ name: String, price: Number, type: String }],
 
   buyerFee: [{ name: String, price: Number, type: String }],
+  createdBy: {
+    type: String,
+  },
 });
 
 export default mongoose.model("Events", EventSchema);

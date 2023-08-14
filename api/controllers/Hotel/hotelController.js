@@ -55,13 +55,6 @@ export const deleteHotel = async (req, res, next) => {
     } else {
       res.status(407).json({ message: "You are not authorized" });
     }
-
-    await foundHotel.deleteOne();
-
-    await Hotel.findByIdAndDelete(req.params.id);
-    res
-      .status(200)
-      .json({ responseCode: 200, message: "Hotel deleted successfully" });
   } catch (err) {
     res
       .status(502)

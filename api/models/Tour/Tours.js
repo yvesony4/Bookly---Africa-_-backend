@@ -45,6 +45,9 @@ const ToursSchema = new mongoose.Schema({
   },
 
   price: [{ tourPrice: Number, salePrice: Number }],
+  createdBy: {
+    type: String,
+  },
 });
 
 export default mongoose.model("Tours", ToursSchema);

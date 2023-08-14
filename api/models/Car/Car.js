@@ -52,6 +52,9 @@ const EventSchema = new mongoose.Schema({
   ICAR_url: {
     type: String,
   },
+  createdBy: {
+    type: String,
+  },
 });
 
 export default mongoose.model("Car", EventSchema);
