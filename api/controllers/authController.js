@@ -149,6 +149,21 @@ export const login = async function (req, res, next) {
   }
 };
 
+export const logout = async function (_req, res, next) {
+  try {
+    // Delete the access_token cookie to log the user out
+    res.cookie("access_token", "", { maxAge: 1 });
+    // Send a 200 response with a success message
+    res.status(200).json({ message: "User logged out successfully" });
+  } catch (err) {
+    // Handle unexpected errors
+    console.error(err);
+    res.status(500).json({ message: "An unexpected error occurred" });
+    // Pass any errors to the next middleware
+    next(err);
+  }
+};
+
 export const googleSuccess = async function (req, res, next) {
   res.send("Logged in Via Google");
 };

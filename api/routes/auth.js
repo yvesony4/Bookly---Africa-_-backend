@@ -7,6 +7,7 @@ import {
   googleSuccess,
   forgot_password,
   reset_password,
+  logout,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -14,6 +15,7 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/validate-otp", validateOTP);
 router.post("/login", login);
+router.post("/logout", logout);
 router.get("/google/callback", googleSuccess);
 router.post("/forgot-password", forgot_password);
 router.post("/reset-password", reset_password);
