@@ -16,10 +16,10 @@ const router = express.Router();
 // Apply middleware to routes
 router.post("/create", verifyAdmin, validateBlogInput, createBlog);
 router.put("/:id/update", validateBlogInput, updateBlog);
-router.delete("/:id", deleteBlog);
+router.delete("/:id", verifyAdmin, deleteBlog);
 // router.delete("/:blogId/comments/:commentId/", deleteComment);
-router.get("/:id", getBlog);
-router.get("/", getBlogs);
+router.get("/:id", verifyAdmin,  getBlog);
+router.get("/", verifyAdmin, getBlogs);
 
 // Apply error handling middleware
 router.use(handleErrors);

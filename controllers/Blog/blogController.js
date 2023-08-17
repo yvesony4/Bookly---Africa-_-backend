@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Blog from "../../models/Blog/blog.js";
 import User from "../../models/User.js";
+
 export const createBlog = async (req, res, next) => {
   // Set the createdBy field to the ID of the user who created the blog
   req.body.createdBy = req.user.id;
@@ -13,8 +14,11 @@ export const createBlog = async (req, res, next) => {
     return res.status(407).json({ message: "You are not authorized" });
   }
 
-  // Remove the ID from the request body
-  delete req.body._id;
+  // Check if a blog with the same title already exists
+  const existingBlog = await Blog.findOne({ title: req.body.title });
+  if (existingBlog) {
+    return res.status(409).json({ message: "Blog with the same title already exists" });
+  }
 
   // Create a new blog object with the request body
   const newBlog = new Blog({
@@ -67,6 +71,22 @@ export const updateBlog = async (req, res, next) => {
 };
 
 export const deleteBlog = async (req, res, next) => {
+    // Check if the user is authenticated
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Set the createdBy field to the ID of the user who created the blog
+    req.body.createdBy = req.user.id;
+
+    // Find the user who created the blog
+    const userType = await User.findById(req.body.createdBy);
+
+    // Check if the user is authorized to create a blog
+    if (userType.role !== "Vendor" && !req.user.isAdmin) {
+      return res.status(407).json({ message: "You are not authorized" });
+    }
+    
   try {
     const isValidId = mongoose.Types.ObjectId.isValid(req.params.id);
     if (!isValidId) {
@@ -87,6 +107,22 @@ export const deleteBlog = async (req, res, next) => {
 };
 
 export const getBlog = async (req, res, next) => {
+    // Check if the user is authenticated
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Set the createdBy field to the ID of the user who created the blog
+    req.body.createdBy = req.user.id;
+
+    // Find the user who created the blog
+    const userType = await User.findById(req.body.createdBy);
+
+    // Check if the user is authorized to create a blog
+    if (userType.role !== "Vendor" && !req.user.isAdmin) {
+      return res.status(407).json({ message: "You are not authorized" });
+    }
+
   try {
     const isValidId = mongoose.Types.ObjectId.isValid(req.params.id);
     if (!isValidId) {
@@ -106,6 +142,22 @@ export const getBlog = async (req, res, next) => {
 };
 
 export const getBlogs = async (req, res, next) => {
+  // Check if the user is authenticated
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  // Set the createdBy field to the ID of the user who created the blog
+  req.body.createdBy = req.user.id;
+
+  // Find the user who created the blog
+  const userType = await User.findById(req.body.createdBy);
+
+  // Check if the user is authorized to create a blog
+  if (userType.role !== "Vendor" && !req.user.isAdmin) {
+    return res.status(407).json({ message: "You are not authorized" });
+  }
+
   try {
     const blogs = await Blog.find({ published: true });
     if (blogs.length === 0) {
