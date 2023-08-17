@@ -5,18 +5,19 @@ import {
   deleteBlog,
   getBlog,
   getBlogs,
-  deleteComment,
+  // deleteComment,
 } from "../../controllers/Blog/blogcontroller.js";
 import { validateBlogInput } from "../../utils/validation.js";
-import { authenticate, handleErrors } from "../../utils/error.js";
+import { handleErrors } from "../../utils/error.js";
+import { verifyAdmin } from "../../utils/verifyToken.js";
 
 const router = express.Router();
 
 // Apply middleware to routes
-router.post("/create", authenticate, validateBlogInput, createBlog);
-router.put("/:id/update", authenticate, validateBlogInput, updateBlog);
-router.delete("/:id/delete", authenticate, deleteBlog);
-router.delete("/:blogId/comments/:commentId/delete", authenticate, deleteComment);
+router.post("/create", verifyAdmin, validateBlogInput, createBlog);
+router.put("/:id/update", validateBlogInput, updateBlog);
+router.delete("/:id", deleteBlog);
+// router.delete("/:blogId/comments/:commentId/", deleteComment);
 router.get("/:id", getBlog);
 router.get("/", getBlogs);
 

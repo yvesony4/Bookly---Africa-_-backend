@@ -1,58 +1,36 @@
 import mongoose from "mongoose";
 import Blog from "../../models/Blog/blog.js";
-
-// Input validation middleware
-const validateBlogInput = (req, res, next) => {
-  const { title, content, author, tags, comments } = req.body;
-  if (!title || !content || !author || !tags || !comments) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-  if (!Array.isArray(tags) || !Array.isArray(comments)) {
-    return res.status(400).json({ message: "Tags and comments must be arrays" });
-  }
-  next();
-};
-
-// Error handling middleware
-const handleErrors = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Internal server error" });
-};
-
-// Authentication middleware
-const authenticate = (req, res, next) => {
-  // Check if user is authenticated
-  if (!req.user) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-  next();
-};
-
-// Data sanitization middleware
-const sanitizeData = (req, res, next) => {
-  // Sanitize input data
-  req.body.title = sanitize(req.body.title);
-  req.body.content = sanitize(req.body.content);
-  req.body.author = sanitize(req.body.author);
-  req.body.tags = req.body.tags.map((tag) => sanitize(tag));
-  req.body.comments = req.body.comments.map((comment) => ({
-    author: sanitize(comment.author),
-    content: sanitize(comment.content),
-  }));
-  next();
-};
-
+import User from "../../models/User.js";
 export const createBlog = async (req, res, next) => {
+  // Set the createdBy field to the ID of the user who created the blog
+  req.body.createdBy = req.user.id;
+
+  // Find the user who created the blog
+  const userType = await User.findById(req.body.createdBy);
+
+  // Check if the user is authorized to create a blog
+  if (userType.role !== "Vendor" && !req.user.isAdmin) {
+    return res.status(407).json({ message: "You are not authorized" });
+  }
+
+  // Remove the ID from the request body
+  delete req.body._id;
+
+  // Create a new blog object with the request body
+  const newBlog = new Blog({
+    title: req.body.title,
+    content: req.body.content,
+    author: req.body.author,
+    tags: req.body.tags,
+    comments: req.body.comments,
+    published: true,
+    createdBy: req.body.createdBy,
+  });
+
   try {
-    const blog = await Blog.create({
-      title: req.body.title,
-      content: req.body.content,
-      author: req.body.author,
-      tags: req.body.tags,
-      comments: req.body.comments,
-      published: true,
-    });
-    res.status(201).json(blog);
+    // Save the new blog to the database
+    const savedBlog = await newBlog.save();
+    res.status(201).json(savedBlog);
   } catch (err) {
     next(err);
   }
@@ -139,23 +117,23 @@ export const getBlogs = async (req, res, next) => {
   }
 };
 
-export const deleteComment = async (req, res, next) => {
-  try {
-    const blog = await Blog.findById(req.params.blogId);
-    if (!blog) {
-      return res.status(404).json({ message: "Blog not found" });
-    }
-    const comment = blog.comments.id(req.params.commentId);
-    if (!comment) {
-      return res.status(404).json({ message: "Comment not found" });
-    }
-    if (comment.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    comment.remove();
-    await blog.save();
-    res.status(200).json({ message: "Comment deleted successfully" });
-  } catch (err) {
-    next(err);
-  }
-};
+// export const deleteComment = async (req, res, next) => {
+//   try {
+//     const blog = await Blog.findById(req.params.blogId);
+//     if (!blog) {
+//       return res.status(404).json({ message: "Blog not found" });
+//     }
+//     const comment = blog.comments.find((comment) => comment._id.toString() === req.params.commentId);
+//     if (!comment) {
+//       return res.status(404).json({ message: "Comment not found" });
+//     }
+//     if (comment.user.toString() !== req.user._id.toString()) {
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
+//     blog.comments = blog.comments.filter((comment) => comment._id.toString() !== req.params.commentId);
+//     await blog.save();
+//     res.status(200).json({ message: "Comment deleted successfully" });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
