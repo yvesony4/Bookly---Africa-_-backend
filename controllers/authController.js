@@ -38,6 +38,8 @@ export const register = async function (req, res, next) {
     });
     const newUser = new User({
       username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       email: req.body.email,
       password: hash,
       role: "Normal",
