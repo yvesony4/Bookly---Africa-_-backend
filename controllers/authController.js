@@ -46,6 +46,12 @@ export const register = async function (req, res, next) {
       otp: otp,
     });
 
+    if (req.body.password != req.body.confirmPassword) {
+      return res
+        .status(502)
+        .json({ responseCode: 409, message: "Password confirmation failed" });
+    }
+
     await newUser.save();
     res
       .status(200)
